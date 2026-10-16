@@ -15,7 +15,7 @@ namespace dlib
 {
     namespace detail
     {
-#if __cpp_lib_math_special_functions
+#ifdef __cpp_lib_math_special_functions
         using std::cyl_bessel_i;
         using std::cyl_bessel_j;
 #else

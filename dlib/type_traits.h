@@ -414,7 +414,7 @@ namespace dlib
 #endif
 #endif
 
-#if HAS_TYPE_PACK_ELEMENT
+#ifdef HAS_TYPE_PACK_ELEMENT
         template<std::size_t I, class... Ts>
         struct nth_type_impl { using type = __type_pack_element<I,Ts...>; };
 #else
