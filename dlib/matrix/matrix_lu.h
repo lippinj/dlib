@@ -15,6 +15,11 @@
 #include "lapack/getrf.h"
 #endif
 
+#if defined(__GNUC__) && (__GNUC__ >= 11 && __GNUC_MINOR__ >= 0)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Waggressive-loop-optimizations"
+#endif
+
 
 namespace dlib 
 {
@@ -353,7 +358,11 @@ namespace dlib
 
 // ----------------------------------------------------------------------------------------
 
-} 
+}
+
+#if defined(__GNUC__) && (__GNUC__ >= 11 && __GNUC_MINOR__ >= 0)
+#pragma GCC diagnostic pop
+#endif
 
 #endif // DLIB_MATRIX_LU_DECOMPOSITION_H 
 
