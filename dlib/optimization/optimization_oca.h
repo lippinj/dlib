@@ -62,7 +62,30 @@ namespace dlib
             sub_max_iter = 50000;
 
             inactive_thresh = 20;
-            max_runtime = std::chrono::hours(24*356*290); // 290 years
+            /**
+             * Originally, the line below was
+             *
+             * max_runtime = std::chrono::hours(24*356*290); // 290 years
+             *
+             * However, it produced wrong results on macOS GCC due to different implementations
+             * on different platforms.
+             * The issue was on the line
+             *
+             * const auto time_to_stop = std::chrono::steady_clock::now() + max_runtime;
+             *
+             * Since std::chrono::steady_clock::now() and max_runtime were both very large numbers,
+             * it was causing time_to_stop to wrap around which resulted with time_to_stop being
+             * a negative number. Consequently, the statement
+             *
+             * if (std::chrono::steady_clock::now() >= time_to_stop)
+             *       break;
+             *
+             * was holding true and hence, an early exit was happening.
+             * Since in our use cases any process should finish within a
+             * reasonable amount of time, 10 minutes timeout
+             * is used as a reasonable replacement to avoid wrap around.
+             */
+            max_runtime = std::chrono::minutes(10);
         }
 
         void set_subproblem_epsilon (
